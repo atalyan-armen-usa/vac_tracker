@@ -45,7 +45,11 @@ jobs:
             echo "No changes"
           else
             git commit -m "data: scrape $(date -u +%Y-%m-%d)"
-            git push
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push && break
+              echo "push failed, retry $i"
+              sleep 5
+            done
           fi
 
       - name: Upload Pages artifact
